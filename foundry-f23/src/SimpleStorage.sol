@@ -1,25 +1,33 @@
+// I'm a comment!
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
 
-contract StorageSystem {
-    uint256 private storedData;
-    address public owner;
+pragma solidity 0.8.19;
 
-    event DataUpdated(uint256 oldValue, uint256 newValue, address updatedBy);
+// pragma solidity ^0.8.0;
+// pragma solidity >=0.8.0 <0.9.0;
 
-    constructor(uint256 initialValue) {
-        storedData = initialValue;
-        owner = msg.sender;
+contract SimpleStorage {
+    uint256 myFavoriteNumber;
+
+    struct Person {
+        uint256 favoriteNumber;
+        string name;
     }
+    // uint256[] public anArray;
+    Person[] public listOfPeople;
 
-    function store(uint256 newValue) public {
-        require(msg.sender == owner, "Only owner can update data");
-        uint256 oldValue = storedData;
-        storedData = newValue;
-        emit DataUpdated(oldValue, newValue, msg.sender);
+    mapping(string => uint256) public nameToFavoriteNumber;
+
+    function store(uint256 _favoriteNumber) public {
+        myFavoriteNumber = _favoriteNumber;
     }
 
     function retrieve() public view returns (uint256) {
-        return storedData;
+        return myFavoriteNumber;
+    }
+
+    function addPerson(string memory _name, uint256 _favoriteNumber) public {
+        listOfPeople.push(Person(_favoriteNumber, _name));
+        nameToFavoriteNumber[_name] = _favoriteNumber;
     }
 }
